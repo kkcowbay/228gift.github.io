@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="theme-color" content="#0b0b10" />
+  <title>One Page Surprise</title>
+
+  <style>
+    :root{
+      --bg1:#0b0b10;
+      --bg2:#141428;
+      --card:#ffffff10;
+      --card2:#ffffff14;
+      --text:#f6f6fb;
+      --muted:#b8b8cc;
+      --accent:#ff6aa2;
+      --danger:#ff4d4d;
+      --ok:#4cd964;
+      --radius:20px;
+    }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 600px at 20% 10%, #2a1b45 0%, transparent 60%),
+        radial-gradient(700px 500px at 80% 20%, #2b2b63 0%, transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+    .shell{
+      width:min(420px, 100%);
+    }
+    .card{
+      background: linear-gradient(180deg, var(--card), var(--card2));
+      border:1px solid #ffffff1f;
+      border-radius: var(--radius);
+      padding:18px;
+      box-shadow: 0 18px 50px #00000066;
+      backdrop-filter: blur(10px);
+    }
+    .title{
+      font-size:22px;
+      line-height:1.2;
+      margin:2px 0 8px;
+      letter-spacing: .3px;
+    }
+    .subtitle{
+      margin:0 0 14px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.55;
+    }
+    .divider{
+      height:1px;
+      background:#ffffff1f;
+      margin:14px 0;
+    }
+    .row{ display:flex; gap:10px; }
+    input{
+      flex:1;
+      background:#0f1020aa;
+      border:1px solid #ffffff24;
+      color:var(--text);
+      border-radius:14px;
+      padding:12px 12px;
+      font-size:16px;
+      outline:none;
+    }
+    input:focus{ border-color:#ffffff50; }
+    button{
+      background: linear-gradient(180deg, #ff7bb0, var(--accent));
+      border:0;
+      color:#160914;
+      font-weight:700;
+      border-radius:14px;
+      padding:12px 14px;
+      font-size:16px;
+      min-width:92px;
+      cursor:pointer;
+      box-shadow: 0 10px 22px #ff6aa233;
+    }
+    button:active{ transform: translateY(1px); }
+    .hint{
+      margin:10px 2px 0;
+      font-size:13px;
+      color:var(--muted);
+      min-height:18px;
+    }
+    .hint.bad{ color: var(--danger); }
+    .hint.good{ color: var(--ok); }
+    .hidden{ display:none; }
+
+    .gift{
+      animation: fadeUp .5s ease both;
+    }
+    @keyframes fadeUp{
+      from{ opacity:0; transform: translateY(10px); }
+      to{ opacity:1; transform: translateY(0); }
+    }
+
+    .badge{
+      display:inline-block;
+      font-size:12px;
+      color:#ffd7e7;
+      border:1px solid #ffffff2a;
+      background:#ffffff10;
+      padding:6px 10px;
+      border-radius:999px;
+      margin-bottom:10px;
+    }
+
+    ul{
+      margin:10px 0 0;
+      padding-left:18px;
+      color: var(--text);
+    }
+    li{ margin:8px 0; line-height:1.5; }
+    .footer{
+      text-align:center;
+      margin-top:12px;
+      color:#ffffff55;
+      font-size:12px;
+    }
+
+    .linkish{
+      color:#ffd1e2;
+      text-decoration:underline;
+      text-underline-offset:3px;
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <!-- Locked -->
+    <section id="locked" class="card">
+      <div class="badge">🔒 只給特定的人看</div>
+      <h1 class="title">給妳/你的一個小驚喜</h1>
+      <p class="subtitle">
+        這頁只是一個入口。輸入密碼後，禮物卡片就會出現。<br/>
+        <span class="linkish">（提示：跟你們的共同回憶有關）</span>
+      </p>
+
+      <div class="divider"></div>
+
+      <div class="row">
+        <input id="pw" type="password" inputmode="text" autocomplete="off" placeholder="輸入密碼" />
+        <button id="btn">解鎖</button>
+      </div>
+      <div id="hint" class="hint"></div>
+    </section>
+
+    <!-- Unlocked -->
+    <section id="unlocked" class="card hidden gift" aria-live="polite">
+      <div class="badge">🎂 Happy Birthday</div>
+      <h2 class="title">生日快樂！</h2>
+      <p class="subtitle">
+        這裡放你想說的話（可以很短，也可以很像小說最後一章）。<br/>
+        我希望今年的你：更自由、更快樂、更像你自己。
+      </p>
+
+      <div class="divider"></div>
+
+      <h3 class="title" style="font-size:18px; margin-top:0;">你的禮物清單</h3>
+      <ul>
+        <li>🎁 禮物 1：＿＿＿＿＿＿（簡短描述）</li>
+        <li>🎁 禮物 2：＿＿＿＿＿＿（簡短描述）</li>
+        <li>🎁 禮物 3：＿＿＿＿＿＿（簡短描述）</li>
+      </ul>
+
+      <div class="divider"></div>
+
+      <p class="subtitle" style="margin-bottom:0;">
+        你也可以在這裡放一張卡片圖（改成 &lt;img&gt;）或一段小影片連結。
+      </p>
+    </section>
+
+    <div class="footer">Made with unreasonable amounts of care.</div>
+  </main>
+
+  <script>
+    // ====== 設定你的密碼（請改）======
+    const PASSWORD = "1234";
+
+    const locked = document.getElementById("locked");
+    const unlocked = document.getElementById("unlocked");
+    const pw = document.getElementById("pw");
+    const btn = document.getElementById("btn");
+    const hint = document.getElementById("hint");
+
+    // 可選：記住已解鎖（同一支手機下次不用再輸入）
+    const STORAGE_KEY = "onepage_surprise_unlocked";
+
+    function setHint(msg, kind){
+      hint.textContent = msg || "";
+      hint.className = "hint" + (kind ? (" " + kind) : "");
+    }
+
+    function unlock(){
+      const v = (pw.value || "").trim();
+      if(!v){
+        setHint("先輸入密碼～", "bad");
+        pw.focus();
+        return;
+      }
+      if(v !== PASSWORD){
+        setHint("密碼不對，再想一下（提示：共同回憶）", "bad");
+        pw.select();
+        return;
+      }
+      localStorage.setItem(STORAGE_KEY, "1");
+      setHint("解鎖成功！", "good");
+      locked.classList.add("hidden");
+      unlocked.classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    btn.addEventListener("click", unlock);
+    pw.addEventListener("keydown", (e) => {
+      if(e.key === "Enter") unlock();
+    });
+
+    // auto-unlock if remembered
+    if(localStorage.getItem(STORAGE_KEY) === "1"){
+      locked.classList.add("hidden");
+      unlocked.classList.remove("hidden");
+    }
+  </script>
+</body>
+</html>
