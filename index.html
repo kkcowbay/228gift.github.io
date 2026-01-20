@@ -154,11 +154,11 @@
   <main class="shell">
     <!-- Locked -->
     <section id="locked" class="card">
-      <div class="badge">🔒 只給特定的人看</div>
-      <h1 class="title">給妳/你的一個小驚喜</h1>
+      <div class="badge">🔒 只給親愛的妳看</div>
+      <h1 class="title">給妳的一個小驚喜</h1>
       <p class="subtitle">
         這頁只是一個入口。輸入密碼後，禮物卡片就會出現。<br/>
-        <span class="linkish">（提示：跟你們的共同回憶有關）</span>
+        <span class="linkish">（提示：送妳禮物的人的英文全名）</span>
       </p>
 
       <div class="divider"></div>
@@ -183,7 +183,8 @@
 
       <h3 class="title" style="font-size:18px; margin-top:0;">你的禮物</h3>
       <ul>
-        <li>🎁 SONY 無線全罩耳機 WH-1000XM5/6 自選兌換券 </li>
+        <li>🎁 SONY 無線全罩耳機 <br/>
+          WH-1000XM5/6 自選兌換券 </li>
       </ul>
 
       <div class="divider"></div>
@@ -202,7 +203,7 @@
     >
     </section>
 
-    <div class="footer">Made with unreasonable amounts of care.</div>
+    <div class="footer">Made with full love of mine.</div>
   </main>
 
   <script>
@@ -229,7 +230,7 @@
         return;
       }
       if(v !== PASSWORD){
-        setHint("密碼不對，再想一下（提示：共同回憶）", "bad");
+        setHint("密碼不對，再想一下（提示：含空格10字）", "bad");
 
         // 觸發微震（為了能連續觸發，先移除再加回）
         pw.classList.remove("shake");
