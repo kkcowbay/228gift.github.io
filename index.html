@@ -99,12 +99,25 @@
     .hidden{ display:none; }
 
     .gift{
-      animation: fadeUp .5s ease both;
+      animation: fadeUp .8s ease both;
     }
     @keyframes fadeUp{
       from{ opacity:0; transform: translateY(10px); }
       to{ opacity:1; transform: translateY(0); }
     }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+
+    .shake {
+      animation: shake .28s ease;
+      border-color: #ff4d4d55 !important;
+    }
+
 
     .badge{
       display:inline-block;
@@ -195,8 +208,6 @@
     const btn = document.getElementById("btn");
     const hint = document.getElementById("hint");
 
-    // 可選：記住已解鎖（同一支手機下次不用再輸入）
-    const STORAGE_KEY = "onepage_surprise_unlocked";
 
     function setHint(msg, kind){
       hint.textContent = msg || "";
@@ -212,10 +223,19 @@
       }
       if(v !== PASSWORD){
         setHint("密碼不對，再想一下（提示：共同回憶）", "bad");
+
+        // 觸發微震（為了能連續觸發，先移除再加回）
+        pw.classList.remove("shake");
+        void pw.offsetWidth; // 強制 reflow，確保動畫能重新播放
+        pw.classList.add("shake");
+
         pw.select();
+
+        // 動畫結束後移除 class，避免影響後續 layout
+        setTimeout(() => pw.classList.remove("shake"), 300);
         return;
       }
-      localStorage.setItem(STORAGE_KEY, "1");
+
       setHint("解鎖成功！", "good");
       locked.classList.add("hidden");
       unlocked.classList.remove("hidden");
@@ -227,11 +247,6 @@
       if(e.key === "Enter") unlock();
     });
 
-    // auto-unlock if remembered
-    if(localStorage.getItem(STORAGE_KEY) === "1"){
-      locked.classList.add("hidden");
-      unlocked.classList.remove("hidden");
-    }
   </script>
 </body>
 </html>
