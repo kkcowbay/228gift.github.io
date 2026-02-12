@@ -158,7 +158,7 @@
       <h1 class="title">給妳的一個小驚喜</h1>
       <p class="subtitle">
         這頁只是一個入口。輸入密碼後，禮物卡片就會出現。<br/>
-        <span class="linkish">（提示：送妳禮物的人的英文全名）</span>
+        <span class="linkish">（提示：送妳禮物的人的英文名，首字大寫）</span>
       </p>
 
       <div class="divider"></div>
@@ -172,11 +172,12 @@
 
     <!-- Unlocked -->
     <section id="unlocked" class="card hidden gift" aria-live="polite">
-      <div class="badge">🎂 Happy Birthday</div>
-      <h2 class="title">生日快樂！</h2>
+      <div class="badge">🎂 Happy Lily Day, my babe❤️ </div>
+      <h2 class="title"> 30Y生日快樂！</h2>
       <p class="subtitle">
-        這裡放你想說的話（可以很短，也可以很像小說最後一章）。<br/>
-        我希望今年的你：更自由、更快樂、更像你自己。
+        恭喜你長大30歲了 <br/>
+        希望今年的你：更快樂、更有錢，更有動力去實現你的目標。<br/>
+        而我也會繼續牽著你往前走～👽🤭
       </p>
 
       <div class="divider"></div>
@@ -208,7 +209,7 @@
 
   <script>
     // ====== 設定你的密碼（請改）======
-    const PASSWORD = "1234";
+    const PASSWORD = "Kevin";
 
     const locked = document.getElementById("locked");
     const unlocked = document.getElementById("unlocked");
@@ -230,7 +231,7 @@
         return;
       }
       if(v !== PASSWORD){
-        setHint("密碼不對，再想一下（提示：含空格10字）", "bad");
+        setHint("密碼不對，你要確?（提示：5字）", "bad");
 
         // 觸發微震（為了能連續觸發，先移除再加回）
         pw.classList.remove("shake");
