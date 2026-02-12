@@ -112,12 +112,10 @@
       60% { transform: translateX(-4px); }
       80% { transform: translateX(4px); }
     }
-
     .shake {
       animation: shake .28s ease;
       border-color: #ff4d4d55 !important;
     }
-
 
     .badge{
       display:inline-block;
@@ -142,14 +140,118 @@
       color:#ffffff55;
       font-size:12px;
     }
-
     .linkish{
       color:#ffd1e2;
       text-decoration:underline;
       text-underline-offset:3px;
     }
+
+    /* ===============================
+       新增：解鎖後「上方標題區」固定置中放大
+       =============================== */
+    #unlocked{
+      padding:0; /* 讓 header/內容更好控制 */
+      overflow:hidden;
+    }
+    .u-inner{
+      padding:18px;
+    }
+
+    .u-header{
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      text-align:center;
+      padding:14px 12px 10px;
+      border-bottom:1px solid #ffffff1f;
+      background: linear-gradient(180deg, #0b0b10cc, #141428aa);
+      backdrop-filter: blur(10px);
+    }
+    .u-header .badge{
+      font-size:14px;
+      padding:8px 12px;
+      margin-bottom:10px;
+    }
+    .u-header .title{
+      font-size:30px;  /* 放大 */
+      margin:0 0 6px;
+      line-height:1.15;
+      letter-spacing:.5px;
+    }
+
+    /* ===============================
+       新增：電影字幕式「一句一頁」+ 點擊下方換頁
+       =============================== */
+    .cinema{
+      min-height: 52vh;         /* 手機看起來比較像「一頁」 */
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      padding:10px 8px 4px;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .line{
+      font-size:20px;           /* iPhone 17 Pro（假想大螢幕）也好讀 */
+      line-height:1.6;
+      color: var(--text);
+      letter-spacing:.2px;
+      max-width: 34ch;
+    }
+
+    .line.fade-in{
+      animation: lineIn .35s ease both;
+    }
+    .line.fade-out{
+      animation: lineOut .22s ease both;
+    }
+    @keyframes lineIn{
+      from{ opacity:0; transform: translateY(10px); filter: blur(2px); }
+      to{ opacity:1; transform: translateY(0); filter: blur(0); }
+    }
+    @keyframes lineOut{
+      from{ opacity:1; transform: translateY(0); }
+      to{ opacity:0; transform: translateY(-8px); }
+    }
+
+    .tap-next{
+      margin-top:16px;
+      font-size:13px;
+      color:#ffffff77;
+    }
+
+    /* 點擊區域：下方一條「看起來像按鈕但不需要真的按」 */
+    .next-zone{
+      margin-top:18px;
+      width:100%;
+      border-top:1px solid #ffffff14;
+      padding:14px 0 4px;
+      text-align:center;
+      color:#ffd1e2;
+      font-weight:700;
+      letter-spacing:.4px;
+    }
+    .next-zone span{
+      display:inline-block;
+      padding:10px 14px;
+      border-radius:999px;
+      background:#ffffff10;
+      border:1px solid #ffffff22;
+      box-shadow: 0 10px 22px #00000022;
+    }
+
+    /* 禮物區（最後才顯示） */
+    .gift-area.hidden{ display:none; }
+    .gift-area{
+      animation: fadeUp .6s ease both;
+      padding-top:6px;
+    }
   </style>
 </head>
+
 <body>
   <main class="shell">
     <!-- Locked -->
@@ -172,40 +274,52 @@
 
     <!-- Unlocked -->
     <section id="unlocked" class="card hidden gift" aria-live="polite">
-      <div class="badge"> 🎇 30歲生日快樂！My Dear❤️ </div>
-      <h2 class="title"> 🎂 Happy Lily Day 🎉</h2>
-      <p class="subtitle">
-        恭喜你長大30歲了<br/> 
-        希望今年的你： <br/>
-        更快樂<br/>
-        更有錢<br/>
-        更有動力去實現你想要的。<br/>
-        我會繼續牽著你往前走🎵<br/>
-        直到宇宙盡頭👽
-      </p>
+      <!-- 固定在上方的標題 -->
+      <div class="u-header">
+        <div class="badge"> 🎇 30歲生日快樂！My Dear❤️ </div>
+        <h2 class="title"> 🎂 Happy Lily Day 🎉</h2>
+      </div>
 
-      <div class="divider"></div>
+      <div class="u-inner">
+        <!-- 電影字幕區 -->
+        <div class="cinema" id="cinema">
+          <div class="line fade-in" id="line"></div>
 
-      <h3 class="title" style="font-size:18px; margin-top:0;">你的禮物</h3>
-      <ul>
-        <li>🎁 SONY 無線全罩耳機 <br/>
-          WH-1000XM5/6 自選兌換券 </li>
-      </ul>
+          <div class="tap-next" id="progress"></div>
 
-      <div class="divider"></div>
+          <!-- 點擊下方換頁 -->
+          <div class="next-zone" id="nextZone">
+            <span>點這裡繼續 ↓</span>
+          </div>
+        </div>
 
-      <img
-        src="228gift.jpg"
-        alt="禮物卡片"
-        style="
-          width: 100%;
-          max-width: 320px;
-          display: block;
-          margin: 14px auto;
-          border-radius: 16px;
-          box-shadow: 0 10px 30px #00000055;
-        "
-    >
+        <!-- 最後才出現：你的禮物 -->
+        <div class="gift-area hidden" id="giftArea">
+          <div class="divider"></div>
+
+          <h3 class="title" style="font-size:18px; margin-top:0;">你的禮物</h3>
+          <ul>
+            <li>🎁 SONY 無線全罩耳機 <br/>
+              WH-1000XM5/6 自選兌換券
+            </li>
+          </ul>
+
+          <div class="divider"></div>
+
+          <img
+            src="228gift.jpg"
+            alt="禮物卡片"
+            style="
+              width: 100%;
+              max-width: 320px;
+              display: block;
+              margin: 14px auto;
+              border-radius: 16px;
+              box-shadow: 0 10px 30px #00000055;
+            "
+          >
+        </div>
+      </div>
     </section>
 
     <div class="footer">Made with full love of mine.</div>
@@ -221,6 +335,32 @@
     const btn = document.getElementById("btn");
     const hint = document.getElementById("hint");
 
+    // ====== 電影字幕：一句一頁（用 <br/> 分隔）======
+    // 你只要改這段文字，換行用 <br/> 就好
+    const CINEMA_TEXT = `
+恭喜你長大30歲了<br/>
+希望今年的你：<br/>
+更快樂<br/>
+更有錢<br/>
+更有動力去實現你想要的。<br/>
+我會繼續牽著你往前走🎵<br/>
+直到宇宙盡頭👽
+    `.trim();
+
+    const cinema = document.getElementById("cinema");
+    const lineEl = document.getElementById("line");
+    const progressEl = document.getElementById("progress");
+    const nextZone = document.getElementById("nextZone");
+    const giftArea = document.getElementById("giftArea");
+
+    const lines = CINEMA_TEXT
+      .split("<br/>")
+      .map(s => s.replace(/\n/g, "").trim())
+      .filter(Boolean);
+
+    let idx = 0;
+    let showingGift = false;
+    let animLock = false;
 
     function setHint(msg, kind){
       hint.textContent = msg || "";
@@ -237,14 +377,10 @@
       if(v !== PASSWORD){
         setHint("密碼不對，你要確?（提示：5字）", "bad");
 
-        // 觸發微震（為了能連續觸發，先移除再加回）
         pw.classList.remove("shake");
-        void pw.offsetWidth; // 強制 reflow，確保動畫能重新播放
+        void pw.offsetWidth;
         pw.classList.add("shake");
-
         pw.select();
-
-        // 動畫結束後移除 class，避免影響後續 layout
         setTimeout(() => pw.classList.remove("shake"), 300);
         return;
       }
@@ -253,13 +389,100 @@
       locked.classList.add("hidden");
       unlocked.classList.remove("hidden");
       window.scrollTo({ top: 0, behavior: "smooth" });
+
+      // 初始化第一句
+      idx = 0;
+      showingGift = false;
+      giftArea.classList.add("hidden");
+      renderLine(true);
     }
+
+    function renderLine(isFirst=false){
+      if(lines.length === 0){
+        // 沒句子就直接顯示禮物
+        showGift();
+        return;
+      }
+
+      // 動畫：先 fade-out 再換字 fade-in
+      if(!isFirst){
+        lineEl.classList.remove("fade-in");
+        lineEl.classList.add("fade-out");
+      }
+
+      const doSwap = () => {
+        lineEl.classList.remove("fade-out");
+        lineEl.textContent = lines[idx] || "";
+
+        // 顯示進度
+        progressEl.textContent = `第 ${idx + 1} / ${lines.length} 句`;
+
+        // 重新觸發 fade-in
+        lineEl.classList.remove("fade-in");
+        void lineEl.offsetWidth;
+        lineEl.classList.add("fade-in");
+      };
+
+      if(isFirst){
+        doSwap();
+      }else{
+        setTimeout(doSwap, 180);
+      }
+    }
+
+    function showGift(){
+      showingGift = true;
+      giftArea.classList.remove("hidden");
+      // 把「繼續」提示改掉（可選）
+      nextZone.querySelector("span").textContent = "看禮物 ↓";
+      progressEl.textContent = "";
+      // 讓畫面稍微往下，剛好看到「你的禮物」
+      setTimeout(() => {
+        giftArea.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 80);
+    }
+
+    function next(){
+      if(animLock) return;
+      animLock = true;
+      setTimeout(() => (animLock = false), 260);
+
+      if(showingGift){
+        // 已顯示禮物：再點就不做事（或你想讓它回到第一句也行）
+        return;
+      }
+
+      if(idx < lines.length - 1){
+        idx += 1;
+        renderLine(false);
+      }else{
+        // 最後一句後，顯示禮物區
+        showGift();
+      }
+    }
+
+    // 點擊下方區域換頁
+    nextZone.addEventListener("click", next);
+
+    // 也支援點整個 cinema 區（你想要更「無腦」的話可留著）
+    // cinema.addEventListener("click", (e) => {
+    //   if(e.target === nextZone || nextZone.contains(e.target)) return;
+    //   next();
+    // });
+
+    // 鍵盤支援：空白鍵 / 右方向鍵
+    window.addEventListener("keydown", (e) => {
+      if(unlocked.classList.contains("hidden")) return;
+      if(e.key === " " || e.key === "ArrowRight"){
+        e.preventDefault();
+        next();
+      }
+    });
 
     btn.addEventListener("click", unlock);
     pw.addEventListener("keydown", (e) => {
       if(e.key === "Enter") unlock();
     });
-
   </script>
 </body>
 </html>
