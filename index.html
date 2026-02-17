@@ -1,262 +1,330 @@
-<!doctype html>
-<html lang="zh-Hant">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="robots" content="noindex,nofollow" />
-  <meta name="theme-color" content="#0b0b10" />
-  <title>One Page Surprise</title>
-
-  <style>
-    :root{
-      --bg1:#0b0b10;
-      --bg2:#141428;
-      --card:#ffffff10;
-      --card2:#ffffff14;
-      --text:#f6f6fb;
-      --muted:#b8b8cc;
-      --accent:#ff6aa2;
-      --danger:#ff4d4d;
-      --ok:#4cd964;
-      --radius:20px;
-    }
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(900px 600px at 20% 10%, #2a1b45 0%, transparent 60%),
-        radial-gradient(700px 500px at 80% 20%, #2b2b63 0%, transparent 60%),
-        linear-gradient(180deg, var(--bg1), var(--bg2));
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:20px;
-    }
-    .shell{
-      width:min(420px, 100%);
-    }
-    .card{
-      background: linear-gradient(180deg, var(--card), var(--card2));
-      border:1px solid #ffffff1f;
-      border-radius: var(--radius);
-      padding:18px;
-      box-shadow: 0 18px 50px #00000066;
-      backdrop-filter: blur(10px);
-    }
-    .title{
-      font-size:22px;
-      line-height:1.2;
-      margin:2px 0 8px;
-      letter-spacing: .3px;
-    }
-    .subtitle{
-      margin:0 0 14px;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.55;
-    }
-    .divider{
-      height:1px;
-      background:#ffffff1f;
-      margin:14px 0;
-    }
-    .row{ display:flex; gap:10px; }
-    input{
-      flex:1;
-      background:#0f1020aa;
-      border:1px solid #ffffff24;
-      color:var(--text);
-      border-radius:14px;
-      padding:12px 12px;
-      font-size:16px;
-      outline:none;
-    }
-    input:focus{ border-color:#ffffff50; }
-    button{
-      background: linear-gradient(180deg, #ff7bb0, var(--accent));
-      border:0;
-      color:#160914;
-      font-weight:700;
-      border-radius:14px;
-      padding:12px 14px;
-      font-size:16px;
-      min-width:92px;
-      cursor:pointer;
-      box-shadow: 0 10px 22px #ff6aa233;
-    }
-    button:active{ transform: translateY(1px); }
-    .hint{
-      margin:10px 2px 0;
-      font-size:13px;
-      color:var(--muted);
-      min-height:18px;
-    }
-    .hint.bad{ color: var(--danger); }
-    .hint.good{ color: var(--ok); }
-    .hidden{ display:none; }
-
-    .gift{
-      animation: fadeUp .8s ease both;
-    }
-    @keyframes fadeUp{
-      from{ opacity:0; transform: translateY(10px); }
-      to{ opacity:1; transform: translateY(0); }
-    }
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      20% { transform: translateX(-6px); }
-      40% { transform: translateX(6px); }
-      60% { transform: translateX(-4px); }
-      80% { transform: translateX(4px); }
-    }
-
-    .shake {
-      animation: shake .28s ease;
-      border-color: #ff4d4d55 !important;
-    }
-
-
-    .badge{
-      display:inline-block;
-      font-size:12px;
-      color:#ffd7e7;
-      border:1px solid #ffffff2a;
-      background:#ffffff10;
-      padding:6px 10px;
-      border-radius:999px;
-      margin-bottom:10px;
-    }
-
-    ul{
-      margin:10px 0 0;
-      padding-left:18px;
-      color: var(--text);
-    }
-    li{ margin:8px 0; line-height:1.5; }
-    .footer{
-      text-align:center;
-      margin-top:12px;
-      color:#ffffff55;
-      font-size:12px;
-    }
-
-    .linkish{
-      color:#ffd1e2;
-      text-decoration:underline;
-      text-underline-offset:3px;
-    }
-  </style>
-</head>
-<body>
-  <main class="shell">
-    <!-- Locked -->
-    <section id="locked" class="card">
-      <div class="badge">🔒 只給親愛的妳看</div>
-      <h1 class="title">給妳的一個小驚喜</h1>
-      <p class="subtitle">
-        輸入密碼後，禮物卡片就會出現。<br/>
-        <span class="linkish">（提示：送妳禮物的人的英文名，首字大寫）</span>
-      </p>
-
-      <div class="divider"></div>
-
-      <div class="row">
-        <input id="pw" type="password" inputmode="text" autocomplete="off" placeholder="輸入密碼" />
-        <button id="btn">解鎖</button>
-      </div>
-      <div id="hint" class="hint"></div>
-    </section>
-
-    <!-- Unlocked -->
-    <section id="unlocked" class="card hidden gift" aria-live="polite">
-      <div class="badge"> 🎇 30歲生日快樂！My Dear❤️ </div>
-      <h2 class="title"> 🎂 Happy Lily Day 🎉</h2>
-      <p class="subtitle">
-        恭喜你長大30歲了，希望今年的你： <br/>
-        <Strong>更快樂、更有錢、更有動力</Strong>達成你想要的。<br/>
-        我會繼續牽著你往前走🎵<br/>
-        直到宇宙盡頭👽
-      </p>
-
-      <div class="divider"></div>
-
-      <h3 class="title" style="font-size:18px; margin-top:0;">你的禮物</h3>
-      <ul>
-        <li>🎁 SONY 無線全罩耳機 <br/>
-          WH-1000XM5/6 自選兌換券 </li>
-      </ul>
-
-      <div class="divider"></div>
-
-      <img
-        src="228gift.jpg"
-        alt="禮物卡片"
-        style="
-          width: 100%;
-          max-width: 320px;
-          display: block;
-          margin: 14px auto;
-          border-radius: 16px;
-          box-shadow: 0 10px 30px #00000055;
-        "
-    >
-    </section>
-
-    <div class="footer">Made with full love of mine.</div>
-  </main>
-
-  <script>
-    // ====== 設定你的密碼（請改）======
-    const PASSWORD = "Kevin";
-
-    const locked = document.getElementById("locked");
-    const unlocked = document.getElementById("unlocked");
-    const pw = document.getElementById("pw");
-    const btn = document.getElementById("btn");
-    const hint = document.getElementById("hint");
-
-
-    function setHint(msg, kind){
-      hint.textContent = msg || "";
-      hint.className = "hint" + (kind ? (" " + kind) : "");
-    }
-
-    function unlock(){
-      const v = (pw.value || "").trim();
-      if(!v){
-        setHint("先輸入密碼～", "bad");
-        pw.focus();
-        return;
-      }
-      if(v !== PASSWORD){
-        setHint("密碼不對，你要確?（提示：5字）", "bad");
-
-        // 觸發微震（為了能連續觸發，先移除再加回）
-        pw.classList.remove("shake");
-        void pw.offsetWidth; // 強制 reflow，確保動畫能重新播放
-        pw.classList.add("shake");
-
-        pw.select();
-
-        // 動畫結束後移除 class，避免影響後續 layout
-        setTimeout(() => pw.classList.remove("shake"), 300);
-        return;
-      }
-
-      setHint("解鎖成功！", "good");
-      locked.classList.add("hidden");
-      unlocked.classList.remove("hidden");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    btn.addEventListener("click", unlock);
-    pw.addEventListener("keydown", (e) => {
-      if(e.key === "Enter") unlock();
-    });
-
-  </script>
-</body>
-</html>
+diff --git a/index.html b/index.html
+index 8253f93221d12a172e3e38f39092ba554e147044..299b7ae180b4e4c870acc12ce405b3d0b7e3f341 100644
+--- a/index.html
++++ b/index.html
+@@ -96,170 +96,289 @@
+     }
+     .hint.bad{ color: var(--danger); }
+     .hint.good{ color: var(--ok); }
+     .hidden{ display:none; }
+ 
+     .gift{
+       animation: fadeUp .8s ease both;
+     }
+     @keyframes fadeUp{
+       from{ opacity:0; transform: translateY(10px); }
+       to{ opacity:1; transform: translateY(0); }
+     }
+     @keyframes shake {
+       0%, 100% { transform: translateX(0); }
+       20% { transform: translateX(-6px); }
+       40% { transform: translateX(6px); }
+       60% { transform: translateX(-4px); }
+       80% { transform: translateX(4px); }
+     }
+ 
+     .shake {
+       animation: shake .28s ease;
+       border-color: #ff4d4d55 !important;
+     }
+ 
+-
+     .badge{
+       display:inline-block;
+-      font-size:12px;
++      font-size:14px;
+       color:#ffd7e7;
+       border:1px solid #ffffff2a;
+       background:#ffffff10;
+-      padding:6px 10px;
++      padding:8px 14px;
+       border-radius:999px;
+-      margin-bottom:10px;
++      margin-bottom:12px;
+     }
+ 
+     ul{
+       margin:10px 0 0;
+       padding-left:18px;
+       color: var(--text);
+     }
+     li{ margin:8px 0; line-height:1.5; }
+     .footer{
+       text-align:center;
+       margin-top:12px;
+       color:#ffffff55;
+       font-size:12px;
+     }
+ 
+     .linkish{
+       color:#ffd1e2;
+       text-decoration:underline;
+       text-underline-offset:3px;
+     }
++
++    /* Unlocked cinematic area */
++    #unlocked{
++      min-height:min(860px, calc(100dvh - 40px));
++      display:flex;
++      flex-direction:column;
++      justify-content:flex-start;
++      gap:14px;
++    }
++    .hero-top{
++      text-align:center;
++      position:sticky;
++      top:0;
++      z-index:2;
++      padding-top:4px;
++      backdrop-filter: blur(2px);
++    }
++    #unlocked .hero-top .badge{
++      font-size:16px;
++      padding:10px 16px;
++      margin-bottom:8px;
++    }
++    #unlocked .hero-top .title{
++      font-size:34px;
++      margin:0;
++      text-shadow:0 4px 20px #ff7bb055;
++    }
++    .story-wrap{
++      flex:1;
++      display:flex;
++      align-items:center;
++      justify-content:center;
++      padding:10px 6px;
++    }
++    .story-line{
++      margin:0;
++      text-align:center;
++      font-size:28px;
++      line-height:1.45;
++      font-weight:700;
++      letter-spacing:.06em;
++      min-height:3.1em;
++      display:flex;
++      align-items:center;
++      justify-content:center;
++      text-shadow:0 6px 20px #00000066;
++      animation: storyEnter .42s ease;
++    }
++    @keyframes storyEnter{
++      from{ opacity:0; transform: translateY(14px) scale(.985); }
++      to{ opacity:1; transform: translateY(0) scale(1); }
++    }
++    .tap-zone{
++      border:1px solid #ffffff2c;
++      background:#ffffff12;
++      border-radius:14px;
++      width:100%;
++      color:#ffe3ee;
++      font-size:15px;
++      font-weight:600;
++      padding:12px;
++      text-align:center;
++      cursor:pointer;
++      user-select:none;
++    }
++    .tap-zone:active{ transform:translateY(1px); }
++    .gift-panel{
++      animation: fadeUp .6s ease both;
++    }
++
++    @media (max-width: 420px){
++      #unlocked{ min-height: calc(100dvh - 40px); }
++      #unlocked .hero-top .title{ font-size:31px; }
++      .story-line{ font-size:26px; }
++    }
+   </style>
+ </head>
+ <body>
+   <main class="shell">
+     <!-- Locked -->
+     <section id="locked" class="card">
+       <div class="badge">🔒 只給親愛的妳看</div>
+       <h1 class="title">給妳的一個小驚喜</h1>
+       <p class="subtitle">
+         輸入密碼後，禮物卡片就會出現。<br/>
+         <span class="linkish">（提示：送妳禮物的人的英文名，首字大寫）</span>
+       </p>
+ 
+       <div class="divider"></div>
+ 
+       <div class="row">
+         <input id="pw" type="password" inputmode="text" autocomplete="off" placeholder="輸入密碼" />
+         <button id="btn">解鎖</button>
+       </div>
+       <div id="hint" class="hint"></div>
+     </section>
+ 
+     <!-- Unlocked -->
+     <section id="unlocked" class="card hidden gift" aria-live="polite">
+-      <div class="badge"> 🎇 30歲生日快樂！My Dear❤️ </div>
+-      <h2 class="title"> 🎂 Happy Lily Day 🎉</h2>
+-      <p class="subtitle">
+-        恭喜你長大30歲了<br/> 
+-        希望今年的你： <br/>
+-        更快樂<br/>
+-        更有錢<br/>
+-        更有動力去實現你想要的。<br/>
+-        我會繼續牽著你往前走🎵<br/>
+-        直到宇宙盡頭👽
+-      </p>
++      <header class="hero-top">
++        <div class="badge">🎇 30歲生日快樂！My Dear❤️</div>
++        <h2 class="title">🎂 Happy Lily Day 🎉</h2>
++      </header>
+ 
+-      <div class="divider"></div>
++      <div class="story-wrap" id="storyWrap">
++        <p id="storyLine" class="story-line"></p>
++      </div>
+ 
+-      <h3 class="title" style="font-size:18px; margin-top:0;">你的禮物</h3>
+-      <ul>
+-        <li>🎁 SONY 無線全罩耳機 <br/>
+-          WH-1000XM5/6 自選兌換券 </li>
+-      </ul>
++      <button id="nextLine" class="tap-zone" type="button">點擊下方，播放下一句 💫</button>
+ 
+-      <div class="divider"></div>
++      <section id="giftPanel" class="gift-panel hidden">
++        <div class="divider"></div>
++        <h3 class="title" style="font-size:18px; margin-top:0;">你的禮物</h3>
++        <ul>
++          <li>🎁 SONY 無線全罩耳機 <br/>
++            WH-1000XM5/6 自選兌換券 </li>
++        </ul>
++
++        <div class="divider"></div>
+ 
+-      <img
+-        src="228gift.jpg"
+-        alt="禮物卡片"
+-        style="
+-          width: 100%;
+-          max-width: 320px;
+-          display: block;
+-          margin: 14px auto;
+-          border-radius: 16px;
+-          box-shadow: 0 10px 30px #00000055;
+-        "
+-    >
++        <img
++          src="228gift.jpg"
++          alt="禮物卡片"
++          style="
++            width: 100%;
++            max-width: 320px;
++            display: block;
++            margin: 14px auto;
++            border-radius: 16px;
++            box-shadow: 0 10px 30px #00000055;
++          "
++        >
++      </section>
+     </section>
+ 
+     <div class="footer">Made with full love of mine.</div>
+   </main>
+ 
+   <script>
+     // ====== 設定你的密碼（請改）======
+     const PASSWORD = "Kevin";
+ 
++    const STORY_LINES = [
++      "恭喜你長大30歲了",
++      "希望今年的你：",
++      "更快樂",
++      "更有錢",
++      "更有動力去實現你想要的。",
++      "我會繼續牽著你往前走🎵",
++      "直到宇宙盡頭👽"
++    ];
++
+     const locked = document.getElementById("locked");
+     const unlocked = document.getElementById("unlocked");
+     const pw = document.getElementById("pw");
+     const btn = document.getElementById("btn");
+     const hint = document.getElementById("hint");
++    const storyLine = document.getElementById("storyLine");
++    const nextLine = document.getElementById("nextLine");
++    const giftPanel = document.getElementById("giftPanel");
+ 
++    let storyIndex = 0;
+ 
+     function setHint(msg, kind){
+       hint.textContent = msg || "";
+       hint.className = "hint" + (kind ? (" " + kind) : "");
+     }
+ 
++    function renderStory(){
++      const line = STORY_LINES[storyIndex];
++      storyLine.textContent = line;
++      storyLine.style.animation = "none";
++      void storyLine.offsetWidth;
++      storyLine.style.animation = "storyEnter .42s ease";
++
++      if(storyIndex >= STORY_LINES.length - 1){
++        nextLine.textContent = "點擊下方，揭曉你的禮物 🎁";
++      }
++    }
++
++    function goNextStory(){
++      if(storyIndex < STORY_LINES.length - 1){
++        storyIndex += 1;
++        renderStory();
++        return;
++      }
++
++      nextLine.classList.add("hidden");
++      document.getElementById("storyWrap").classList.add("hidden");
++      giftPanel.classList.remove("hidden");
++      window.scrollTo({ top: 0, behavior: "smooth" });
++    }
++
+     function unlock(){
+       const v = (pw.value || "").trim();
+       if(!v){
+         setHint("先輸入密碼～", "bad");
+         pw.focus();
+         return;
+       }
+       if(v !== PASSWORD){
+         setHint("密碼不對，你要確?（提示：5字）", "bad");
+ 
+         // 觸發微震（為了能連續觸發，先移除再加回）
+         pw.classList.remove("shake");
+-        void pw.offsetWidth; // 強制 reflow，確保動畫能重新播放
++        void pw.offsetWidth;
+         pw.classList.add("shake");
+ 
+         pw.select();
+ 
+         // 動畫結束後移除 class，避免影響後續 layout
+         setTimeout(() => pw.classList.remove("shake"), 300);
+         return;
+       }
+ 
+       setHint("解鎖成功！", "good");
++      storyIndex = 0;
++      renderStory();
++      giftPanel.classList.add("hidden");
++      document.getElementById("storyWrap").classList.remove("hidden");
++      nextLine.classList.remove("hidden");
++      nextLine.textContent = "點擊下方，播放下一句 💫";
+       locked.classList.add("hidden");
+       unlocked.classList.remove("hidden");
+       window.scrollTo({ top: 0, behavior: "smooth" });
+     }
+ 
+     btn.addEventListener("click", unlock);
++    nextLine.addEventListener("click", goNextStory);
+     pw.addEventListener("keydown", (e) => {
+       if(e.key === "Enter") unlock();
+     });
+-
+   </script>
+ </body>
+ </html>
