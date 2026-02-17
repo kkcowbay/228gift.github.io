@@ -19,7 +19,12 @@
       --danger:#ff4d4d;
       --ok:#4cd964;
       --radius:20px;
+
+      --ring:#ffd1e2aa;
+      --border:#ffffff1f;
+      --shadow: 0 18px 50px #00000066;
     }
+
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
     body{
@@ -34,36 +39,62 @@
       align-items:center;
       justify-content:center;
       padding:20px;
+      overflow-x:hidden;
     }
-    .shell{
-      width:min(420px, 100%);
+
+    /* subtle grain (cheap-but-nice texture) */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+      opacity:.25;
     }
+
+    .shell{ width:min(420px, 100%); }
+
     .card{
       background: linear-gradient(180deg, var(--card), var(--card2));
-      border:1px solid #ffffff1f;
+      border:1px solid var(--border);
       border-radius: var(--radius);
       padding:18px;
-      box-shadow: 0 18px 50px #00000066;
+      box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      position:relative;
     }
+
     .title{
       font-size:22px;
       line-height:1.2;
       margin:2px 0 8px;
-      letter-spacing: .3px;
+      letter-spacing: .2px;
     }
     .subtitle{
       margin:0 0 14px;
       color:var(--muted);
       font-size:14px;
-      line-height:1.55;
+      line-height:1.65;
     }
+
     .divider{
       height:1px;
       background:#ffffff1f;
       margin:14px 0;
     }
-    .row{ display:flex; gap:10px; }
+
+    .row{ display:flex; gap:10px; align-items:stretch; }
+
+    .sr-only{
+      position:absolute !important;
+      height:1px; width:1px;
+      overflow:hidden;
+      clip:rect(1px, 1px, 1px, 1px);
+      white-space:nowrap;
+    }
+
     input{
       flex:1;
       background:#0f1020aa;
@@ -73,21 +104,34 @@
       padding:12px 12px;
       font-size:16px;
       outline:none;
+      transition: border-color .2s ease, box-shadow .2s ease, transform .05s ease;
     }
-    input:focus{ border-color:#ffffff50; }
+
+    input:focus{
+      border-color:#ffffff65;
+      box-shadow: 0 0 0 4px var(--ring);
+    }
+
     button{
       background: linear-gradient(180deg, #ff7bb0, var(--accent));
       border:0;
       color:#160914;
-      font-weight:700;
+      font-weight:800;
       border-radius:14px;
       padding:12px 14px;
       font-size:16px;
       min-width:92px;
       cursor:pointer;
       box-shadow: 0 10px 22px #ff6aa233;
+      transition: transform .08s ease, filter .15s ease;
     }
-    button:active{ transform: translateY(1px); }
+    button:hover{ filter: brightness(1.03); }
+    button:active{ transform: translateY(1px) scale(0.99); }
+    button:focus{
+      outline:none;
+      box-shadow: 0 0 0 4px var(--ring), 0 10px 22px #ff6aa233;
+    }
+
     .hint{
       margin:10px 2px 0;
       font-size:13px;
@@ -96,15 +140,17 @@
     }
     .hint.bad{ color: var(--danger); }
     .hint.good{ color: var(--ok); }
+
     .hidden{ display:none; }
 
     .gift{
-      animation: fadeUp .8s ease both;
+      animation: fadeUp .75s cubic-bezier(.2,.8,.2,1) both;
     }
     @keyframes fadeUp{
       from{ opacity:0; transform: translateY(10px); }
       to{ opacity:1; transform: translateY(0); }
     }
+
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
       20% { transform: translateX(-6px); }
@@ -112,12 +158,7 @@
       60% { transform: translateX(-4px); }
       80% { transform: translateX(4px); }
     }
-
-    .shake {
-      animation: shake .28s ease;
-      border-color: #ff4d4d55 !important;
-    }
-
+    .shake { animation: shake .28s ease; border-color: #ff4d4d55 !important; }
 
     .badge{
       display:inline-block;
@@ -130,12 +171,9 @@
       margin-bottom:10px;
     }
 
-    ul{
-      margin:10px 0 0;
-      padding-left:18px;
-      color: var(--text);
-    }
-    li{ margin:8px 0; line-height:1.5; }
+    ul{ margin:10px 0 0; padding-left:18px; color: var(--text); }
+    li{ margin:8px 0; line-height:1.6; }
+
     .footer{
       text-align:center;
       margin-top:12px;
@@ -148,14 +186,28 @@
       text-decoration:underline;
       text-underline-offset:3px;
     }
+
+    .giftimg{
+      width: 100%;
+      max-width: 320px;
+      display: block;
+      margin: 14px auto;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px #00000055;
+    }
+
+    /* Reduce motion preference */
+    @media (prefers-reduced-motion: reduce){
+      *{ animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    }
   </style>
 </head>
 <body>
   <main class="shell">
     <!-- Locked -->
-    <section id="locked" class="card">
+    <section id="locked" class="card" aria-labelledby="lockTitle">
       <div class="badge">🔒 只給親愛的妳看</div>
-      <h1 class="title">給妳的一個小驚喜</h1>
+      <h1 id="lockTitle" class="title">給妳的一個小驚喜</h1>
       <p class="subtitle">
         輸入密碼後，禮物卡片就會出現。<br/>
         <span class="linkish">（提示：送妳禮物的人的英文名，首字大寫）</span>
@@ -164,10 +216,12 @@
       <div class="divider"></div>
 
       <div class="row">
+        <label class="sr-only" for="pw">密碼</label>
         <input id="pw" type="password" inputmode="text" autocomplete="off" placeholder="輸入密碼" />
-        <button id="btn">解鎖</button>
+        <button id="btn" type="button">解鎖</button>
       </div>
-      <div id="hint" class="hint"></div>
+
+      <div id="hint" class="hint" role="status" aria-live="polite"></div>
     </section>
 
     <!-- Unlocked -->
@@ -176,7 +230,7 @@
       <h2 class="title"> 🎂 Happy Lily Day 🎉</h2>
       <p class="subtitle">
         恭喜你長大30歲了，希望今年的你： <br/>
-        <Strong>更快樂、更有錢、更有動力</Strong>達成你想要的。<br/>
+        <strong>更快樂、更有錢、更有動力</strong>達成你想要的。<br/>
         我會繼續牽著你往前走🎵<br/>
         直到宇宙盡頭👽
       </p>
@@ -185,32 +239,23 @@
 
       <h3 class="title" style="font-size:18px; margin-top:0;">你的禮物</h3>
       <ul>
-        <li>🎁 SONY 無線全罩耳機 <br/>
-          WH-1000XM5/6 自選兌換券 </li>
+        <li>
+          🎁 SONY 無線全罩耳機<br/>
+          WH-1000XM5/6 自選兌換券
+        </li>
       </ul>
 
       <div class="divider"></div>
 
-      <img
-        src="228gift.jpg"
-        alt="禮物卡片"
-        style="
-          width: 100%;
-          max-width: 320px;
-          display: block;
-          margin: 14px auto;
-          border-radius: 16px;
-          box-shadow: 0 10px 30px #00000055;
-        "
-    >
+      <img class="giftimg" src="228gift.jpg" alt="禮物卡片" />
     </section>
 
     <div class="footer">Made with full love of mine.</div>
   </main>
 
   <script>
-    // ====== 設定你的密碼（請改）======
-    const PASSWORD = "Kevin";
+    // === 你只要改這裡：密碼（仍然在前端，不可能真正安全，但至少不裸奔）===
+    const PASSWORD_PLAIN = "Kevin";
 
     const locked = document.getElementById("locked");
     const unlocked = document.getElementById("unlocked");
@@ -218,38 +263,73 @@
     const btn = document.getElementById("btn");
     const hint = document.getElementById("hint");
 
+    let tries = 0;
+    let lockUntil = 0;
 
     function setHint(msg, kind){
       hint.textContent = msg || "";
       hint.className = "hint" + (kind ? (" " + kind) : "");
     }
 
-    function unlock(){
+    // SHA-256 hashing (built-in Web Crypto)
+    async function sha256(text){
+      const enc = new TextEncoder().encode(text);
+      const buf = await crypto.subtle.digest("SHA-256", enc);
+      return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,"0")).join("");
+    }
+
+    let PASSWORD_HASH_PROMISE = sha256(PASSWORD_PLAIN);
+
+    function shakeInput(){
+      pw.classList.remove("shake");
+      void pw.offsetWidth;
+      pw.classList.add("shake");
+      setTimeout(() => pw.classList.remove("shake"), 300);
+    }
+
+    async function unlock(){
+      const now = Date.now();
+      if(now < lockUntil){
+        const sec = Math.ceil((lockUntil - now) / 1000);
+        setHint(`太快了～等 ${sec} 秒再試一次 🫣`, "bad");
+        shakeInput();
+        return;
+      }
+
       const v = (pw.value || "").trim();
       if(!v){
         setHint("先輸入密碼～", "bad");
         pw.focus();
         return;
       }
-      if(v !== PASSWORD){
-        setHint("密碼不對，你要確?（提示：5字）", "bad");
 
-        // 觸發微震（為了能連續觸發，先移除再加回）
-        pw.classList.remove("shake");
-        void pw.offsetWidth; // 強制 reflow，確保動畫能重新播放
-        pw.classList.add("shake");
+      const inputHash = await sha256(v);
+      const passHash = await PASSWORD_HASH_PROMISE;
 
+      if(inputHash !== passHash){
+        tries += 1;
+
+        // 小小的 rate limit：連錯 4 次就鎖 8 秒（可自行調）
+        if(tries >= 4){
+          lockUntil = Date.now() + 8000;
+          tries = 0;
+          setHint("你是不是在偷猜密碼 😤 先冷靜 8 秒再來。", "bad");
+        }else{
+          setHint("密碼不對，再想想～（提示：5 字）", "bad");
+        }
+
+        shakeInput();
         pw.select();
-
-        // 動畫結束後移除 class，避免影響後續 layout
-        setTimeout(() => pw.classList.remove("shake"), 300);
         return;
       }
 
       setHint("解鎖成功！", "good");
       locked.classList.add("hidden");
       unlocked.classList.remove("hidden");
-      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      // 讓對方視線回到卡片頂部（但尊重 reduced motion）
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
     }
 
     btn.addEventListener("click", unlock);
@@ -257,6 +337,8 @@
       if(e.key === "Enter") unlock();
     });
 
+    // 初始更貼心：自動 focus
+    pw.focus();
   </script>
 </body>
 </html>
