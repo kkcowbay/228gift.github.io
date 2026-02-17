@@ -7,11 +7,6 @@
   <meta name="theme-color" content="#0b0b10" />
   <title>One Page Surprise</title>
 
-  <!-- 開源手寫字體（文青感） -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
-
   <style>
     :root{
       --bg1:#0b0b10;
@@ -40,8 +35,9 @@
       justify-content:center;
       padding:20px;
     }
-    .shell{ width:min(420px, 100%); }
-
+    .shell{
+      width:min(420px, 100%);
+    }
     .card{
       background: linear-gradient(180deg, var(--card), var(--card2));
       border:1px solid #ffffff1f;
@@ -50,7 +46,6 @@
       box-shadow: 0 18px 50px #00000066;
       backdrop-filter: blur(10px);
     }
-
     .title{
       font-size:22px;
       line-height:1.2;
@@ -63,7 +58,11 @@
       font-size:14px;
       line-height:1.55;
     }
-
+    .divider{
+      height:1px;
+      background:#ffffff1f;
+      margin:14px 0;
+    }
     .row{ display:flex; gap:10px; }
     input{
       flex:1;
@@ -89,7 +88,6 @@
       box-shadow: 0 10px 22px #ff6aa233;
     }
     button:active{ transform: translateY(1px); }
-
     .hint{
       margin:10px 2px 0;
       font-size:13px;
@@ -100,12 +98,13 @@
     .hint.good{ color: var(--ok); }
     .hidden{ display:none; }
 
+    .gift{
+      animation: fadeUp .8s ease both;
+    }
     @keyframes fadeUp{
       from{ opacity:0; transform: translateY(10px); }
       to{ opacity:1; transform: translateY(0); }
     }
-    .gift{ animation: fadeUp .8s ease both; }
-
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
       20% { transform: translateX(-6px); }
@@ -113,10 +112,12 @@
       60% { transform: translateX(-4px); }
       80% { transform: translateX(4px); }
     }
-    .shake{
+
+    .shake {
       animation: shake .28s ease;
       border-color: #ff4d4d55 !important;
     }
+
 
     .badge{
       display:inline-block;
@@ -129,6 +130,12 @@
       margin-bottom:10px;
     }
 
+    ul{
+      margin:10px 0 0;
+      padding-left:18px;
+      color: var(--text);
+    }
+    li{ margin:8px 0; line-height:1.5; }
     .footer{
       text-align:center;
       margin-top:12px;
@@ -141,163 +148,8 @@
       text-decoration:underline;
       text-underline-offset:3px;
     }
-
-    /* ========= Unlocked：版面結構 ========= */
-    #unlocked{
-      padding:0;
-      overflow:hidden;
-
-      /* 讓「點此繼續」能穩穩在最下方 */
-      display:flex;
-      flex-direction:column;
-      min-height: 82vh;
-    }
-
-    .u-header{
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      text-align:center;
-      padding:14px 12px 10px;
-      background: linear-gradient(180deg, #0b0b10cc, #141428aa);
-      backdrop-filter: blur(10px);
-    }
-    .u-header .badge{
-      font-size:14px;
-      padding:8px 12px;
-      margin-bottom:10px;
-    }
-    .u-header .title{
-      font-size:32px;
-      margin:0 0 6px;
-      line-height:1.12;
-      letter-spacing:.5px;
-      font-weight:800;
-    }
-
-    .u-inner{
-      padding:18px;
-      flex:1;
-      display:flex;
-      flex-direction:column;
-    }
-
-    /* ========= 電影大字幕 ========= */
-    .cinema{
-      flex:1;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      text-align:center;
-      padding:12px 10px 0;
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .line{
-      width: 100%;
-      padding: 0 6px;             /* 只留兩側一點空白 */
-      font-family: "Ma Shan Zheng", "Noto Sans TC", system-ui, sans-serif;
-      font-size: 34px;            /* 大字幕 */
-      line-height: 1.35;
-      font-weight: 800;           /* 你要粗體感：手寫字體也會更有存在感 */
-      letter-spacing: .6px;
-      text-shadow: 0 10px 30px #00000066;
-    }
-
-    .line.fade-in{ animation: lineIn .35s ease both; }
-    .line.fade-out{ animation: lineOut .22s ease both; }
-    @keyframes lineIn{
-      from{ opacity:0; transform: translateY(10px); filter: blur(2px); }
-      to{ opacity:1; transform: translateY(0); filter: blur(0); }
-    }
-    @keyframes lineOut{
-      from{ opacity:1; transform: translateY(0); }
-      to{ opacity:0; transform: translateY(-8px); }
-    }
-
-    /* ========= 「點此繼續」：底部、低存在感、停留 1 秒才出現 ========= */
-    .next-zone{
-      margin-top:auto;
-      padding: 10px 0 6px;
-      text-align:center;
-      color: rgba(255,255,255,.8);
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: .4px;
-      opacity: 0;
-      pointer-events: none; /* 沒出現前不能點 */
-      transition: opacity .35s ease;
-    }
-    .next-zone.show{
-      opacity: 1;
-      pointer-events: auto; /* 出現後才可點 */
-    }
-    .next-zone span{
-      cursor:pointer;
-      user-select:none;
-    }
-
-    /* ========= 禮物頁 ========= */
-    .gift-area.hidden{ display:none; }
-    .gift-area{
-      animation: fadeUp .6s ease both;
-      padding-top: 8px;
-    }
-    .gift-title{
-      text-align:center;
-      font-size:22px;
-      font-weight:800;
-      margin: 10px 0 12px;
-      letter-spacing:.4px;
-    }
-
-    .gift-list{
-      list-style:none;
-      padding:0;
-      margin: 0;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .gift-item{
-      background:#ffffff0a;
-      border:1px solid #ffffff14;
-      border-radius:16px;
-      padding:14px 14px;
-      line-height:1.55;
-    }
-    .gift-item .top{
-      font-size:16px;
-      font-weight:800;
-      margin-bottom:6px;
-    }
-    .gift-item .sub{
-      font-size:14px;
-      color:#ffffffcc;
-    }
-
-    .back-btn{
-      margin: 14px auto 0;
-      display:block;
-      width: 100%;
-      max-width: 260px;
-      background: #ffffff10;
-      border: 1px solid #ffffff22;
-      color: rgba(255,255,255,.9);
-      border-radius: 999px;
-      padding: 12px 14px;
-      font-weight: 800;
-      font-size: 14px;
-      letter-spacing:.4px;
-      cursor:pointer;
-      box-shadow: 0 12px 30px #00000033;
-    }
-    .back-btn:active{ transform: translateY(1px); }
   </style>
 </head>
-
 <body>
   <main class="shell">
     <!-- Locked -->
@@ -309,7 +161,7 @@
         <span class="linkish">（提示：送妳禮物的人的英文名，首字大寫）</span>
       </p>
 
-      <div style="height:1px;background:#ffffff1f;margin:14px 0;"></div>
+      <div class="divider"></div>
 
       <div class="row">
         <input id="pw" type="password" inputmode="text" autocomplete="off" placeholder="輸入密碼" />
@@ -320,49 +172,37 @@
 
     <!-- Unlocked -->
     <section id="unlocked" class="card hidden gift" aria-live="polite">
-      <div class="u-header">
-        <div class="badge"> 🎇 30歲生日快樂！My Dear❤️ </div>
-        <h2 class="title">🎂 Happy Lily Day 🎉</h2>
-      </div>
+      <div class="badge"> 🎇 30歲生日快樂！My Dear❤️ </div>
+      <h2 class="title"> 🎂 Happy Lily Day 🎉</h2>
+      <p class="subtitle">
+        恭喜你長大30歲了，希望今年的你： <br/>
+        <Strong>更快樂、更有錢、更有動力</Strong>達成你想要的。<br/>
+        我會繼續牽著你往前走🎵<br/>
+        直到宇宙盡頭👽
+      </p>
 
-      <div class="u-inner">
-        <!-- 電影字幕區 -->
-        <div class="cinema" id="cinema">
-          <div class="line fade-in" id="line"></div>
-        </div>
+      <div class="divider"></div>
 
-        <!-- 底部提示（footer 上方） -->
-        <div class="next-zone" id="nextZone">
-          <span>點此繼續</span>
-        </div>
+      <h3 class="title" style="font-size:18px; margin-top:0;">你的禮物</h3>
+      <ul>
+        <li>🎁 SONY 無線全罩耳機 <br/>
+          WH-1000XM5/6 自選兌換券 </li>
+      </ul>
 
-        <!-- 禮物區（最後才顯示） -->
-        <div class="gift-area hidden" id="giftArea">
-          <h3 class="gift-title">你的禮物</h3>
+      <div class="divider"></div>
 
-          <ul class="gift-list">
-            <li class="gift-item">
-              <div class="top">🎁 SONY 無線全罩耳機</div>
-              <div class="sub">WH-1000XM5 / XM6 自選兌換券</div>
-            </li>
-          </ul>
-
-          <img
-            src="228gift.jpg"
-            alt="禮物卡片"
-            style="
-              width: 100%;
-              max-width: 320px;
-              display: block;
-              margin: 16px auto 10px;
-              border-radius: 16px;
-              box-shadow: 0 10px 30px #00000055;
-            "
-          >
-
-          <button class="back-btn" id="backBtn">回到第一句話</button>
-        </div>
-      </div>
+      <img
+        src="228gift.jpg"
+        alt="禮物卡片"
+        style="
+          width: 100%;
+          max-width: 320px;
+          display: block;
+          margin: 14px auto;
+          border-radius: 16px;
+          box-shadow: 0 10px 30px #00000055;
+        "
+    >
     </section>
 
     <div class="footer">Made with full love of mine.</div>
@@ -378,48 +218,10 @@
     const btn = document.getElementById("btn");
     const hint = document.getElementById("hint");
 
-    // ====== 電影字幕：一句一頁（用 <br/> 分隔）======
-    const CINEMA_TEXT = `
-恭喜你長大30歲了<br/>
-希望今年的你：<br/>
-更快樂<br/>
-更有錢<br/>
-更有動力去實現你想要的。<br/>
-我會繼續牽著你往前走🎵<br/>
-直到宇宙盡頭👽
-    `.trim();
-
-    const lineEl = document.getElementById("line");
-    const nextZone = document.getElementById("nextZone");
-    const giftArea = document.getElementById("giftArea");
-    const backBtn = document.getElementById("backBtn");
-
-    const lines = CINEMA_TEXT
-      .split("<br/>")
-      .map(s => s.replace(/\n/g, "").trim())
-      .filter(Boolean);
-
-    let idx = 0;
-    let showingGift = false;
-    let animLock = false;
-    let ctaTimer = null;
 
     function setHint(msg, kind){
       hint.textContent = msg || "";
       hint.className = "hint" + (kind ? (" " + kind) : "");
-    }
-
-    function showCTAWithDelay(){
-      clearTimeout(ctaTimer);
-      nextZone.classList.remove("show");
-      ctaTimer = setTimeout(() => {
-        if(!showingGift) nextZone.classList.add("show");
-      }, 1000); // 停留超過 1 秒才顯示
-    }
-
-    function hideCTA(){
-      clearTimeout(ctaTimer);
-      nextZone.classList.remove("show");
     }
 
     function unlock(){
@@ -432,10 +234,14 @@
       if(v !== PASSWORD){
         setHint("密碼不對，你要確?（提示：5字）", "bad");
 
+        // 觸發微震（為了能連續觸發，先移除再加回）
         pw.classList.remove("shake");
-        void pw.offsetWidth;
+        void pw.offsetWidth; // 強制 reflow，確保動畫能重新播放
         pw.classList.add("shake");
+
         pw.select();
+
+        // 動畫結束後移除 class，避免影響後續 layout
         setTimeout(() => pw.classList.remove("shake"), 300);
         return;
       }
@@ -444,92 +250,13 @@
       locked.classList.add("hidden");
       unlocked.classList.remove("hidden");
       window.scrollTo({ top: 0, behavior: "smooth" });
-
-      idx = 0;
-      showingGift = false;
-      giftArea.classList.add("hidden");
-
-      renderLine(true);
     }
-
-    function renderLine(isFirst=false){
-      if(lines.length === 0){
-        showGift();
-        return;
-      }
-
-      hideCTA();
-
-      if(!isFirst){
-        lineEl.classList.remove("fade-in");
-        lineEl.classList.add("fade-out");
-      }
-
-      const doSwap = () => {
-        lineEl.classList.remove("fade-out");
-        lineEl.textContent = lines[idx] || "";
-
-        lineEl.classList.remove("fade-in");
-        void lineEl.offsetWidth;
-        lineEl.classList.add("fade-in");
-
-        showCTAWithDelay();
-      };
-
-      if(isFirst) doSwap();
-      else setTimeout(doSwap, 180);
-    }
-
-    function showGift(){
-      showingGift = true;
-      hideCTA();
-      giftArea.classList.remove("hidden");
-      setTimeout(() => {
-        giftArea.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 80);
-    }
-
-    function next(){
-      if(animLock) return;
-      animLock = true;
-      setTimeout(() => (animLock = false), 260);
-
-      if(showingGift) return;
-
-      if(idx < lines.length - 1){
-        idx += 1;
-        renderLine(false);
-      }else{
-        showGift();
-      }
-    }
-
-    function backToFirst(){
-      showingGift = false;
-      giftArea.classList.add("hidden");
-      idx = 0;
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      renderLine(true);
-    }
-
-    // 點底部「點此繼續」
-    nextZone.addEventListener("click", next);
-
-    // 鍵盤支援：空白鍵 / 右方向鍵
-    window.addEventListener("keydown", (e) => {
-      if(unlocked.classList.contains("hidden")) return;
-      if(e.key === " " || e.key === "ArrowRight"){
-        e.preventDefault();
-        next();
-      }
-    });
-
-    backBtn.addEventListener("click", backToFirst);
 
     btn.addEventListener("click", unlock);
     pw.addEventListener("keydown", (e) => {
       if(e.key === "Enter") unlock();
     });
+
   </script>
 </body>
 </html>
